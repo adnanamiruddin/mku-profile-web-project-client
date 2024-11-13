@@ -13,7 +13,7 @@ export default function DashboardHomePage() {
           <div>
             <Image
               priority
-              src="/homepage-image.png"
+              src="/dashboard-home.png"
               alt="Homepage Image"
               width={1920}
               height={1080}

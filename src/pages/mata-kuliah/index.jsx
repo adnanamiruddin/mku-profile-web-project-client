@@ -1,7 +1,7 @@
 import Dropdown from "@/components/layouts/Dropdown";
 import SectionTitle from "@/components/layouts/SectionTitle";
 import HeaderDetailPage from "@/components/layouts/globals/HeaderDetailPage";
-import { subjectList } from "@/data/staticData";
+import { dummySubjectList } from "@/data/staticData";
 
 export default function SubjectsPage() {
   return (
@@ -26,7 +26,7 @@ export default function SubjectsPage() {
         </div>
 
         <div className="md:w-1/2">
-          {subjectList.map((subject, i) => (
+          {dummySubjectList.map((subject, i) => (
             <>
               {subject.type === "Mata Kuliah Wajib Umum" ? (
                 <div
@@ -82,7 +82,7 @@ export default function SubjectsPage() {
         </div>
 
         <div className="md:w-1/2">
-          {subjectList.map((subject, i) => (
+          {dummySubjectList.map((subject, i) => (
             <>
               {subject.type === "Basic Sains" ? (
                 <div

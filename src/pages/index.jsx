@@ -1,7 +1,7 @@
 import Dropdown from "@/components/layouts/Dropdown";
 import InformationItem from "@/components/layouts/InformationItem";
 import SectionTitle from "@/components/layouts/SectionTitle";
-import { informationList, dummySubjectList } from "@/data/staticData";
+import { dummyInformationList, dummySubjectList } from "@/data/staticData";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ export default function HomePage() {
   const [informations, setInformations] = useState([]);
 
   const fetchInformationsData = async () => {
-    setInformations(informationList);
+    setInformations(dummyInformationList);
   };
   //
   useEffect(() => {
@@ -22,11 +22,11 @@ export default function HomePage() {
       <div className="mt-2 bg-white rounded py-4 px-1.5 md:flex">
         <Image
           priority
-          src="/home-image1.png"
-          alt="Kampus STIKES"
+          src="/home-image.png"
+          alt="MKU Universitas Hasanuddin"
           width={1920}
           height={1080}
-          className="w-full md:w-[70%]"
+          className="w-full md:w-[45%] object-contain"
         />
 
         <h1 className="text-4xl text-[#3F3F3F] font-semibold leading-tight tracking-wide p-3 md:my-auto md:text-6xl md:ms-8">
@@ -60,7 +60,7 @@ export default function HomePage() {
         alt="Peta MKU"
         width={500}
         height={500}
-        className="mt-2 w-full"
+        className="mt-2 w-full h-[75vh] object-contain"
       />
 
       {/* MATA KULIAH */}
