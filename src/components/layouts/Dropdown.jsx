@@ -10,11 +10,11 @@ export default function Dropdown({ title, showBorderTop, children }) {
     >
       <div
         className={`${
-          showBorderTop ? "pt-3" : ""
-        } flex justify-between items-center gap-6`}
+          showBorderTop ? "pt-3 md:pt-5" : ""
+        } flex justify-between items-center gap-6 md:px-4 md:pb-2`}
       >
         <h3
-          className={`w-[90%] text-base text-start ${
+          className={`w-[90%] text-base text-start md:text-lg ${
             isOpen ? "font-semibold" : "font-normal"
           }`}
         >

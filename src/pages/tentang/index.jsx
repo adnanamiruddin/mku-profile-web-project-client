@@ -3,10 +3,10 @@ import HeaderDetailPage from "@/components/layouts/globals/HeaderDetailPage";
 
 export default function AboutPage() {
   return (
-    <div>
+    <div className="md:mt-10">
       {/* PROFIL */}
       <div className="-mt-6">
-        <SectionTitle title="PROFIL" />
+        <SectionTitle id="profil" title="PROFIL" />
       </div>
 
       <div className="mt-2 bg-white rounded py-2 px-3">
@@ -27,15 +27,21 @@ export default function AboutPage() {
       </div>
 
       {/* PEGAWAI */}
-      <SectionTitle title="PEGAWAI" />
+      <SectionTitle id="pegawai" title="PEGAWAI" />
 
       <HeaderDetailPage
         title="Data Dosen & Tendik"
         description="Bulan Mei 2024"
       />
 
+      <embed
+        className="w-full h-[70vh] border-none"
+        src="/pdf/Data-Dosen-dan-Tendik.pdf"
+        type="application/pdf"
+      />
+      {/*  */}
       <p className="text-sm text-center p-4">
-        Jika PDF tidak muncul, <br />
+        Jika PDF tidak muncul,{" "}
         <a
           download
           href="/pdf/Data-Dosen-dan-Tendik.pdf"
@@ -45,12 +51,6 @@ export default function AboutPage() {
         </a>
         .
       </p>
-      {/*  */}
-      <embed
-        className="w-full h-[70vh] border-none"
-        src="/pdf/Data-Dosen-dan-Tendik.pdf"
-        type="application/pdf"
-      />
     </div>
   );
 }

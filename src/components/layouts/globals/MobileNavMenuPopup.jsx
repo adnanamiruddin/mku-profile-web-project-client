@@ -2,25 +2,9 @@ import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import InnerDropdown from "./InnerDropdown";
 
-const InnerDropdown = ({ navItems, handleNavLinkItemClicked }) => {
-  return (
-    <div className="bg-[#333333] border-[1.5px] border-[#A0A0A0] rounded-lg p-4">
-      <div className="flex flex-col gap-3">
-        {navItems.map((item, i) => (
-          <Link
-            key={i}
-            href={item.href}
-            onClick={() => handleNavLinkItemClicked(item.href)}
-            className="text-white"
-          >
-            {item.name}
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-};
+
 
 const MenuItem = ({ item, handleNavLinkItemClicked }) => {
   const [isOpen, setIsOpen] = useState(false);

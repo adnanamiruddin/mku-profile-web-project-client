@@ -1,4 +1,4 @@
-export const subjectList = [
+export const dummySubjectList = [
   {
     type: "Mata Kuliah Wajib Umum",
     subjects: [
@@ -68,5 +68,44 @@ export const subjectList = [
         file: "/pdf/sample-rps.pdf",
       },
     ],
+  },
+];
+
+export const dummyInformationList = [
+  {
+    date: "Sabtu, 11 Maret 2023",
+    title: "[INFO SAINS SKPB UNHAS]",
+    image: "/home-information-1.png",
+    slug: "info-sains-skpb-unhas",
+  },
+  {
+    date: "Sabtu, 11 Maret 2023",
+    title: "UPT MKU Unhas Miliki Manajemen Terpisah dari Fakultas",
+    image: "/home-information-2.png",
+    slug: "upt-mku-unhas-miliki-manajemen-terpisah-dari-fakultas",
+  },
+  {
+    date: "Sabtu, 11 Maret 2023",
+    title: "[INFO SAINS SKPB UNHAS]",
+    image: "/home-information-1.png",
+    slug: "info-sains-skpb-unhas",
+  },
+  {
+    date: "Sabtu, 11 Maret 2023",
+    title: "[INFO SAINS SKPB UNHAS]",
+    image: "/home-information-1.png",
+    slug: "info-sains-skpb-unhas",
+  },
+  {
+    date: "Sabtu, 11 Maret 2023",
+    title: "[INFO SAINS SKPB UNHAS]",
+    image: "/home-information-1.png",
+    slug: "info-sains-skpb-unhas",
+  },
+  {
+    date: "Sabtu, 11 Maret 2023",
+    title: "[INFO SAINS SKPB UNHAS]",
+    image: "/home-information-1.png",
+    slug: "info-sains-skpb-unhas",
   },
 ];
