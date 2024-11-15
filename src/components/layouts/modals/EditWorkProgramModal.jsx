@@ -21,12 +21,12 @@ export default function EditWorkProgramModal({ workProgramPdf }) {
           </button>
         </form>
         <h1 className="font-bold text-xl border-b border-gray-400 pb-4 -mt-2 -mx-6 px-6">
-          Upload Foto
+          Upload Dokumen
         </h1>
 
         <UploadFileField
           onlyPdf
-          label="Upload Foto"
+          label="Upload Dokumen"
           onChange={(e) => {
             setDocumentUpload(e.target.files[0]);
           }}

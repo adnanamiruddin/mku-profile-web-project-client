@@ -26,9 +26,9 @@ export default function Sidebar() {
             <Link
               key={j}
               href={item.href}
-              className={`flex items-center gap-4 py-2.5 px-8 font-semibold hover:bg-blue-100 hover:text-blue-600 transition-all duration-300 ease-in-out focus:outline-none focus:text-blue-600 focus:bg-blue-200 ${
+              className={`flex items-center gap-4 py-2.5 px-8 font-semibold hover:bg-emerald-100 hover:text-emerald-600 transition-all duration-300 ease-in-out focus:outline-none focus:text-emerald-600 focus:bg-emerald-200 ${
                 router.pathname === item.href
-                  ? "bg-blue-100 text-blue-600"
+                  ? "bg-emerald-100 text-emerald-600"
                   : "text-gray-600"
               }`}
             >

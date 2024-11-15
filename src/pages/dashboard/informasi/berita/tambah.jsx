@@ -11,8 +11,12 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import UploadFileField from "@/components/layouts/functions/UploadFileField";
+import { useRouter } from "next/router";
 
 export default function DashboardAddInformationPage() {
+  const router = useRouter();
+  const { edit } = router.query;
+
   const [imageUpload, setImageUpload] = useState(null);
   const [content, setContent] = useState("");
 
@@ -26,14 +30,12 @@ export default function DashboardAddInformationPage() {
       slug: "",
       author: "",
       description: "",
-      content: "",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Judul harus diisi"),
       slug: Yup.string().required("Slug harus diisi"),
       author: Yup.string().required("Penulis harus diisi"),
       description: Yup.string().required("Deskripsi harus diisi"),
-      content: Yup.string().required("Konten harus diisi"),
     }),
     onSubmit: async (values) => {
       console.log(values);
@@ -48,6 +50,20 @@ export default function DashboardAddInformationPage() {
       .replace(/[^\w-]+/g, "");
     addDataForm.setFieldValue("slug", titleToSlug);
   }, [addDataForm.values.title]);
+
+  // EDIT MODE
+  useEffect(() => {
+    if (edit) {
+      addDataForm.setValues({
+        title: "Judul Berita Edit",
+        slug: "judul-berita-edit",
+        author: "Penulis Edit",
+        description: "Deskripsi Sampul Edit",
+      });
+      setContent("Konten berita edit...");
+      setImageUpload("/informasi/information-placeholder.png");
+    }
+  }, [edit]);
 
   return (
     <div className="h-full overflow-hidden">
@@ -157,7 +173,7 @@ export default function DashboardAddInformationPage() {
                 <div className="mt-2 bg-white py-2 px-3">
                   <Image
                     src={
-                      imageUpload
+                      imageUpload && imageUpload instanceof File
                         ? URL.createObjectURL(imageUpload)
                         : "/informasi/information-placeholder.png"
                     }

@@ -2,6 +2,7 @@ import AddDataButton from "@/components/layouts/functions/AddDataButton";
 import DeleteButton from "@/components/layouts/functions/DeleteButton";
 import EditButton from "@/components/layouts/functions/EditButton";
 import DashboardHeader from "@/components/layouts/globals/DashboardHeader";
+import DeleteInformationModal from "@/components/layouts/modals/DeleteInformationModal";
 import NotFound from "@/components/layouts/NotFound";
 import { dummyInformationList } from "@/data/staticData";
 import Link from "next/link";
@@ -13,6 +14,9 @@ export default function DashboardInformationPage() {
 
   const [informations, setInformations] = useState([]);
   const [loadingInformations, setLoadingInformations] = useState(false);
+  //
+  const [selectedInformationIdToDelete, setSelectedInformationIdToDelete] =
+    useState(null);
 
   const fetchInformationsData = async () => {
     setLoadingInformations(true);
@@ -83,14 +87,23 @@ export default function DashboardInformationPage() {
                         <EditButton
                           onClick={() =>
                             router.push(
-                              `/dashboard/informasi/berita/${information.slug}/edit`
+                              `/dashboard/informasi/berita/tambah?edit=${information.slug}`
                             )
                           }
                         >
                           Edit
                         </EditButton>
                         {/*  */}
-                        <DeleteButton onClick={() => {}}>Hapus</DeleteButton>
+                        <DeleteButton
+                          onClick={() => {
+                            setSelectedInformationIdToDelete(information.id);
+                            document
+                              .getElementById("delete_information_modal")
+                              .showModal();
+                          }}
+                        >
+                          Hapus
+                        </DeleteButton>
                       </td>
                     </tr>
                   ))}
@@ -102,6 +115,12 @@ export default function DashboardInformationPage() {
           </table>
         </div>
       </div>
+
+      <DeleteInformationModal
+        informationId={selectedInformationIdToDelete}
+        setInformationId={setSelectedInformationIdToDelete}
+        fetchInformationsData={fetchInformationsData}
+      />
     </div>
   );
 }

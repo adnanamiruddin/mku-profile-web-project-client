@@ -11,10 +11,17 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import UploadFileField from "@/components/layouts/functions/UploadFileField";
+import { useRouter } from "next/router";
 
 export default function DashboardAddSubjectPage() {
-  const [imageUpload, setImageUpload] = useState(null);
-  const [content, setContent] = useState("");
+  const router = useRouter();
+  const { edit } = router.query;
+
+  const [rpsDocument, setRpsDocument] = useState(null);
+  const [lecturerDocument, setLecturerDocument] = useState(null);
+  const [scheduleDocument, setScheduleDocument] = useState(null);
+  const [monitoringDocument, setMonitoringDocument] = useState(null);
+  const [evaluationDocument, setEvaluationDocument] = useState(null);
 
   const todayOnFormat = format(new Date(), "eeee, d MMMM yyyy", {
     locale: id,
@@ -22,32 +29,29 @@ export default function DashboardAddSubjectPage() {
 
   const addDataForm = useFormik({
     initialValues: {
-      title: "",
-      slug: "",
-      author: "",
-      description: "",
-      content: "",
+      subjectName: "",
+      subjectCategory: "",
     },
     validationSchema: Yup.object({
-      title: Yup.string().required("Judul harus diisi"),
-      slug: Yup.string().required("Slug harus diisi"),
-      author: Yup.string().required("Penulis harus diisi"),
-      description: Yup.string().required("Deskripsi harus diisi"),
-      content: Yup.string().required("Konten harus diisi"),
+      subjectName: Yup.string().required("Nama Mata Kuliah harus diisi"),
+      subjectCategory: Yup.string().required(
+        "Kategori Mata Kuliah harus diisi"
+      ),
     }),
     onSubmit: async (values) => {
       console.log(values);
     },
   });
 
+  // EDIT MODE
   useEffect(() => {
-    const title = addDataForm.values.title;
-    const titleToSlug = title
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
-    addDataForm.setFieldValue("slug", titleToSlug);
-  }, [addDataForm.values.title]);
+    if (edit) {
+      addDataForm.setValues({
+        subjectName: "Nama Mata Kuliah Edit",
+        subjectCategory: "Kategori Mata Kuliah Edit",
+      });
+    }
+  }, [edit]);
 
   return (
     <div className="h-full overflow-hidden">
@@ -82,15 +86,35 @@ export default function DashboardAddSubjectPage() {
               />
             </div>
 
-            <UploadFileField onlyPdf label="RPS" />
+            <UploadFileField
+              onlyPdf
+              label="RPS"
+              onChange={(e) => setRpsDocument(e.target.files[0])}
+            />
 
-            <UploadFileField onlyPdf label="Dosen Pengampu" />
+            <UploadFileField
+              onlyPdf
+              label="Dosen Pengampu"
+              onChange={(e) => setLecturerDocument(e.target.files[0])}
+            />
 
-            <UploadFileField onlyPdf label="Jadwal Perkuliahan" />
+            <UploadFileField
+              onlyPdf
+              label="Jadwal Perkuliahan"
+              onChange={(e) => setScheduleDocument(e.target.files[0])}
+            />
 
-            <UploadFileField onlyPdf label="Monitoring Perkuliahan" />
+            <UploadFileField
+              onlyPdf
+              label="Monitoring Perkuliahan"
+              onChange={(e) => setMonitoringDocument(e.target.files[0])}
+            />
 
-            <UploadFileField onlyPdf label="Evaluasi Perkuliahan" />
+            <UploadFileField
+              onlyPdf
+              label="Evaluasi Perkuliahan"
+              onChange={(e) => setEvaluationDocument(e.target.files[0])}
+            />
           </div>
         </div>
       </div>

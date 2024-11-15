@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function InformationItem({ information }) {
   return (
     <Link
-      href={`${information.slug}`}
+      href={`/informasi/${information.slug}`}
       className="bg-white rounded p-3 md:min-w-[25%]"
     >
       <Image

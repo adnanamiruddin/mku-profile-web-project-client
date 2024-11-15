@@ -13,7 +13,7 @@ export default function UploadFileField({
         type="file"
         accept={onlyPdf ? "application/pdf" : "image/*"}
         onChange={onChange}
-        className="file-input file-input-bordered w-full bg-gray-50"
+        className="file-input file-input-bordered file-input-success w-full bg-gray-50"
       />
     </div>
   );

@@ -2,6 +2,7 @@ import AddDataButton from "@/components/layouts/functions/AddDataButton";
 import DeleteButton from "@/components/layouts/functions/DeleteButton";
 import EditButton from "@/components/layouts/functions/EditButton";
 import DashboardHeader from "@/components/layouts/globals/DashboardHeader";
+import DeleteSubjectModal from "@/components/layouts/modals/DeleteSubjectModal";
 import NotFound from "@/components/layouts/NotFound";
 import { dummySubjectList } from "@/data/staticData";
 import Link from "next/link";
@@ -13,6 +14,9 @@ export default function DashboardSubjectsPage() {
 
   const [subjects, setSubjects] = useState([]);
   const [loadingSubjects, setLoadingSubjects] = useState(false);
+  //
+  const [selectedSubjectIdToDelete, setSelectedSubjectIdToDelete] =
+    useState(null);
 
   const fetchSubjectsData = async () => {
     setLoadingSubjects(true);
@@ -48,8 +52,8 @@ export default function DashboardSubjectsPage() {
               <table className="mt-4 w-full">
                 <thead>
                   <tr className="w-full text-black flex items-center py-3 px-1 border-b-2 border-gray-300 text-lg">
-                    <th className="w-[5%] text-start">No</th>
-                    <th className="w-[55%] text-start">Nama</th>
+                    <th className="w-[10%] text-start">No</th>
+                    <th className="w-[50%] text-start">Nama</th>
                     <th className="w-[20%] text-start">Dibuat Pada</th>
                     <th className="w-[20%] text-start">Aksi</th>
                   </tr>
@@ -62,8 +66,8 @@ export default function DashboardSubjectsPage() {
                           key={i}
                           className="text-black flex items-center py-2 px-1 border-b-2 border-gray-300"
                         >
-                          <td className="w-[5%] text-start ps-2">{i + 1}</td>
-                          <td className="w-[55%] text-start underline hover:text-blue-500 break-words">
+                          <td className="w-[10%] text-start ps-2">{i + 1}</td>
+                          <td className="w-[50%] text-start underline hover:text-blue-500 break-words">
                             <Link
                               href={`/mata-kuliah/${subject.title}`}
                               target="_blank"
@@ -78,14 +82,21 @@ export default function DashboardSubjectsPage() {
                             <EditButton
                               onClick={() =>
                                 router.push(
-                                  `/dashboard/mata-kuliah/${subject.title}/edit`
+                                  `/dashboard/mata-kuliah/tambah?edit=${subject.title}`
                                 )
                               }
                             >
                               Edit
                             </EditButton>
                             {/*  */}
-                            <DeleteButton onClick={() => {}}>
+                            <DeleteButton
+                              onClick={() => {
+                                setSelectedSubjectIdToDelete(subject.id);
+                                document
+                                  .getElementById("delete_subject_modal")
+                                  .showModal();
+                              }}
+                            >
                               Hapus
                             </DeleteButton>
                           </td>
@@ -101,6 +112,12 @@ export default function DashboardSubjectsPage() {
           ))}
         </div>
       </div>
+
+      <DeleteSubjectModal
+        subjectId={selectedSubjectIdToDelete}
+        setSubjectId={setSelectedSubjectIdToDelete}
+        fetchSubjectsData={fetchSubjectsData}
+      />
     </div>
   );
 }

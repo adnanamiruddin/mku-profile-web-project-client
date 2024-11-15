@@ -1,3 +1,5 @@
+import { id } from "date-fns/locale";
+
 export const dummySubjectList = [
   {
     type: "Mata Kuliah Wajib Umum",
@@ -88,6 +90,7 @@ export const dummySubjectList = [
 
 export const dummyInformationList = [
   {
+    id: 1,
     date: "Sabtu, 11 Maret 2023",
     title: "[INFO SAINS SKPB UNHAS]",
     image: "/home-information-1.png",
@@ -95,6 +98,7 @@ export const dummyInformationList = [
     status: "Draf",
   },
   {
+    id: 2,
     date: "Sabtu, 11 Maret 2023",
     title: "UPT MKU Unhas Miliki Manajemen Terpisah dari Fakultas",
     image: "/home-information-2.png",
@@ -102,6 +106,7 @@ export const dummyInformationList = [
     status: "Publish",
   },
   {
+    id: 3,
     date: "Sabtu, 11 Maret 2023",
     title: "[INFO SAINS SKPB UNHAS]",
     image: "/home-information-1.png",
@@ -109,6 +114,7 @@ export const dummyInformationList = [
     status: "Publish",
   },
   {
+    id: 4,
     date: "Sabtu, 11 Maret 2023",
     title: "[INFO SAINS SKPB UNHAS]",
     image: "/home-information-1.png",
@@ -116,6 +122,7 @@ export const dummyInformationList = [
     status: "Draf",
   },
   {
+    id: 5,
     date: "Sabtu, 11 Maret 2023",
     title: "[INFO SAINS SKPB UNHAS]",
     image: "/home-information-1.png",
@@ -123,6 +130,7 @@ export const dummyInformationList = [
     status: "Publish",
   },
   {
+    id: 6,
     date: "Sabtu, 11 Maret 2023",
     title: "[INFO SAINS SKPB UNHAS]",
     image: "/home-information-1.png",
