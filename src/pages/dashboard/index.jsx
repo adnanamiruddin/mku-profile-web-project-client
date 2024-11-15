@@ -10,11 +10,11 @@ export default function DashboardHomePage() {
       <div>
         <Image
           priority
-          src="/dashboard-home.png"
+          src="/home-image.png"
           alt="Homepage Image"
           width={1920}
           height={1080}
-          className="w-full object-cover"
+          className="w-full h-80 object-cover"
         />
 
         <div className="ms-24 -mt-24 w-max relative">

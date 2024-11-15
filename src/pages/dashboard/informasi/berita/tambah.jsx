@@ -136,7 +136,7 @@ export default function DashboardAddInformationPage() {
 
               <TextArea
                 clearAutoMargin
-                rows={4}
+                rows={3}
                 label="Deskripsi Sampul"
                 placeholder="Masukkan deskripsi sampul..."
                 name="description"
