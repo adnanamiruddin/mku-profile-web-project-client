@@ -38,7 +38,7 @@ const subjectNavItems = [
   {
     href: "/dashboard/mata-kuliah",
     label: "Mata Kuliah",
-    icon: <Icon icon="arcticons:studysmarter" className="text-2xl" />,
+    icon: <Icon icon="nimbus:university" className="text-2xl" />,
   },
 ];
 

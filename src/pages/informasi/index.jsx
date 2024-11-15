@@ -37,13 +37,13 @@ export default function InformationPage() {
         alt="Peta MKU"
         width={500}
         height={500}
-        className="mt-2 w-full h-[75vh] object-contain"
+        className="mt-2 w-full md:h-[75vh] object-contain"
       />
 
       {/* INFORMASI */}
       <SectionTitle id="berita" title="INFORMASI" />
 
-      <div className="mt-2 flex justify-center items-center gap-1 overflow-auto whitespace-nowrap">
+      <div className="mt-2 flex items-center gap-1 overflow-auto whitespace-nowrap">
         <TabItem initialTab="semua" tab={tab} setTab={setTab}>
           Semua
         </TabItem>

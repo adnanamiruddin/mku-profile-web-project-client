@@ -6,20 +6,19 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function InformationDetailPage() {
-  const [informations, setInformations] = useState([]);
+  const [anotherInformations, setAnotherInformations] = useState([]);
 
-  const fetchInformationsData = async () => {
-    setInformations(dummyInformationList);
+  const fetchAnotherInformationsData = async () => {
+    setAnotherInformations(dummyInformationList);
   };
   //
   useEffect(() => {
-    fetchInformationsData();
+    fetchAnotherInformationsData();
   }, []);
 
   return (
     <div className="md:mt-10 md:flex md:items-start md:gap-3">
       <div className="w-full md:w-[75%]">
-        {/* PETA MKU */}
         <div className="-mt-6">
           <SectionTitle title="INFORMASI" />
         </div>
@@ -87,7 +86,7 @@ export default function InformationDetailPage() {
           <SectionTitle title="BERITA LAINNYA" />
 
           <div className="mt-2 flex flex-col gap-2">
-            {informations.map((information, i) => (
+            {anotherInformations.map((information, i) => (
               <InformationItem key={i} information={information} />
             ))}
           </div>
@@ -101,7 +100,7 @@ export default function InformationDetailPage() {
         </div>
 
         <div className="mt-2 flex flex-col gap-2">
-          {informations.map((information, i) => (
+          {anotherInformations.map((information, i) => (
             <InformationItem key={i} information={information} />
           ))}
         </div>

@@ -1,7 +1,10 @@
 import { Icon } from "@iconify/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function Dropdown({ title, showBorderTop, children }) {
+export default function SubjectDropdown({ title, showBorderTop, children }) {
+  const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -20,11 +23,21 @@ export default function Dropdown({ title, showBorderTop, children }) {
         >
           {title}
         </h3>
-        <Icon
-          icon={isOpen ? "icon-park:up" : "icon-park:down"}
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-2xl"
-        />
+
+        <div className="flex gap-2">
+          {isOpen ? (
+            <Icon
+              icon="iconamoon:eye"
+              onClick={() => router.push(`/mata-kuliah/${title}`)}
+              className="text-2xl cursor-pointer"
+            />
+          ) : null}
+          <Icon
+            icon={isOpen ? "icon-park:up" : "icon-park:down"}
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-2xl cursor-pointer"
+          />
+        </div>
       </div>
 
       {isOpen ? (

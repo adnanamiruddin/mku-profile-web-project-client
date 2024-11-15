@@ -1,4 +1,4 @@
-import Dropdown from "@/components/layouts/Dropdown";
+import SubjectDropdown from "@/components/layouts/SubjectDropdown";
 import InformationItem from "@/components/layouts/InformationItem";
 import SectionTitle from "@/components/layouts/SectionTitle";
 import { dummyInformationList, dummySubjectList } from "@/data/staticData";
@@ -60,7 +60,7 @@ export default function HomePage() {
         alt="Peta MKU"
         width={500}
         height={500}
-        className="mt-2 w-full h-[75vh] object-contain"
+        className="mt-2 w-full md:h-[75vh] object-contain"
       />
 
       {/* MATA KULIAH */}
@@ -85,7 +85,7 @@ export default function HomePage() {
               </h3>
             </div>
             {subject.subjects.map((subject, i) => (
-              <Dropdown
+              <SubjectDropdown
                 key={i}
                 title={subject.title}
                 showBorderTop={i === 0 ? false : true}
@@ -107,7 +107,7 @@ export default function HomePage() {
                   </a>
                   .
                 </p>
-              </Dropdown>
+              </SubjectDropdown>
             ))}
           </div>
         ))}

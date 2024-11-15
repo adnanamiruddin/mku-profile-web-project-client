@@ -84,7 +84,7 @@ export default function MainLayout({ children }) {
         ) : (
           <ProtectedPage>
             {router.pathname === "/login" ? (
-              { children }
+              <>{children}</>
             ) : (
               <div className="md:flex">
                 <Sidebar />

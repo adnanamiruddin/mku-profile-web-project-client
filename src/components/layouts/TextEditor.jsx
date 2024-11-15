@@ -47,7 +47,7 @@ export default function TextEditor({ label, content, setContent }) {
           "image",
           "video",
         ]}
-        placeholder="Write something amazing..."
+        placeholder="Ketik di sini..."
         modules={modules}
         onChange={setContent}
         value={content}

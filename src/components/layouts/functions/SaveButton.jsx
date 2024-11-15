@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 
-export default function EditButton({ onClick, disabled, children }) {
+export default function SaveButton({ onClick, disabled, children }) {
   return (
     <button
       onClick={onClick}
