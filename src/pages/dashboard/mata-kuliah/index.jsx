@@ -53,7 +53,7 @@ export default function DashboardSubjectsPage() {
                 <thead>
                   <tr className="w-full text-black flex items-center py-3 px-1 border-b-2 border-gray-300 text-lg">
                     <th className="w-[10%] text-start">No</th>
-                    <th className="w-[50%] text-start">Nama</th>
+                    <th className="w-[50%] text-start">Nama Mata Kuliah</th>
                     <th className="w-[20%] text-start">Dibuat Pada</th>
                     <th className="w-[20%] text-start">Aksi</th>
                   </tr>
