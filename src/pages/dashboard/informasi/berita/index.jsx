@@ -3,7 +3,7 @@ import DeleteButton from "@/components/layouts/functions/DeleteButton";
 import EditButton from "@/components/layouts/functions/EditButton";
 import DashboardHeader from "@/components/layouts/globals/DashboardHeader";
 import DeleteInformationModal from "@/components/layouts/modals/DeleteInformationModal";
-import NotFound from "@/components/layouts/NotFound";
+import NotFound from "@/components/layouts/globals/NotFound";
 import { dummyInformationList } from "@/data/staticData";
 import Link from "next/link";
 import { useRouter } from "next/router";
