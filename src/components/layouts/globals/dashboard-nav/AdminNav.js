@@ -50,6 +50,14 @@ const workProgramNavItems = [
   },
 ];
 
+const facilityNavItems = [
+  {
+    href: "/dashboard/sarana-dan-prasarana",
+    label: "Sarana & Prasarana",
+    icon: <Icon icon="carbon:building" className="text-2xl" />,
+  },
+];
+
 export const AdminNav = [
   {
     title: "UTAMA",
@@ -70,5 +78,9 @@ export const AdminNav = [
   {
     title: "PROGRAM KERJA",
     items: workProgramNavItems,
+  },
+  {
+    title: "SARANA & PRASARANA",
+    items: facilityNavItems,
   },
 ];

@@ -1,5 +1,6 @@
 import { selectUser, setUser } from "@/redux/features/userSlice";
 import { Icon } from "@iconify/react";
+import Cookies from "js-cookie";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -15,6 +16,9 @@ export default function SidebarProfile() {
 
   const handleLogout = () => {
     dispatch(setUser(null));
+    Cookies.remove("actkn");
+    Cookies.remove("rfrshtkn");
+    Cookies.remove("lggnnusr");
     router.push("/");
   };
 
@@ -22,13 +26,13 @@ export default function SidebarProfile() {
     <div className="flex items-center gap-3">
       <Image
         src="/profile-lecturer.png"
-        alt={user.name || user.username}
+        alt={user.account || user.name || user.username || "User"}
         width={200}
         height={200}
         className="w-9 h-9 object-cover rounded-full"
       />
       <h6 className="flex items-center">
-        {user.name}
+        {user.account || user.name || user.username || "User"}
         <div>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -48,17 +52,14 @@ export default function SidebarProfile() {
               <div className="font-sans flex flex-col items-center">
                 <Image
                   src="/profile-lecturer.png"
-                  alt={user.name || user.username}
+                  alt={user.account || user.name || user.username || "User"}
                   width={500}
                   height={500}
                   className="w-14 h-14 object-cover rounded-full"
                 />
                 <h6 className="mt-4 text-center mx-6">
-                  {user.name || user.username}
+                  {user.account || user.name || user.username || "User"}
                 </h6>
-                <p className="mt-2 text-sm text-gray-300 text-center">
-                  {user.email || "-"}
-                </p>
               </div>
               {/*  */}
               <div className="mt-4 border-b border-gray-600"></div>

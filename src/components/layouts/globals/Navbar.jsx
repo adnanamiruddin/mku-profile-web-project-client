@@ -55,6 +55,11 @@ export default function Navbar({
       type: "hyperlink",
       href: "/program-kerja",
     },
+    {
+      name: "Sarana & Prasarana",
+      type: "hyperlink",
+      href: "/sarana-dan-prasarana",
+    },
   ];
 
   return (

@@ -7,41 +7,143 @@ import TextEditor from "@/components/layouts/TextEditor";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Image from "next/image";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import UploadFileField from "@/components/layouts/functions/UploadFileField";
 import { useRouter } from "next/router";
+import InputWithSelect from "@/components/layouts/functions/InputWithSelect";
+import informationApi from "@/api/modules/information.api";
+import { toast } from "react-toastify";
+import { formatDateToIndo } from "@/helpers/dateHelper";
+import { motion } from "framer-motion";
+import { Icon } from "@iconify/react";
 
 export default function DashboardAddInformationPage() {
   const router = useRouter();
-  const { edit } = router.query;
+  const { editBlogId, editBlogSlug } = router.query;
 
+  const [loading, setLoading] = useState(false);
+  //
   const [imageUpload, setImageUpload] = useState(null);
   const [content, setContent] = useState("");
 
-  const todayOnFormat = format(new Date(), "eeee, d MMMM yyyy", {
-    locale: id,
-  });
+  const todayOnFormat = formatDateToIndo(new Date());
+
+  const handleCreateBlog = async ({ values, content, imageUpload }) => {
+    const { response, error } = await informationApi.blog.createBlog({
+      title: values.title,
+      slug: values.slug,
+      status: parseInt(values.status),
+      author: values.author,
+      imageDesc: values.imageDesc,
+      content,
+    });
+    if (response) {
+      const uploadResult = await handleUploadBlogImage({
+        slug: values.slug,
+        image: imageUpload,
+      });
+      if (uploadResult.success) {
+        toast.success("Berita berhasil dibuat");
+        router.push("/dashboard/informasi/berita");
+      } else {
+        toast.error(uploadResult.errorMessage);
+      }
+    }
+    if (error) {
+      toast.error("Gagal membuat berita");
+    }
+  };
+  //
+  const handleUpdateBlog = async ({ values, content, imageUpload }) => {
+    const { response, error } = await informationApi.updateBlog({
+      blogId: editBlogId,
+      title: values.title,
+      slug: values.slug,
+      status: parseInt(values.status),
+      author: values.author,
+      imageDesc: values.imageDesc,
+      content,
+    });
+    if (response) {
+      if (imageUpload && imageUpload instanceof File) {
+        const uploadResult = await handleUploadBlogImage({
+          slug: values.slug,
+          image: imageUpload,
+        });
+        if (uploadResult.success) {
+          toast.success("Berita berhasil diperbarui");
+          router.push("/dashboard/informasi/berita");
+        } else {
+          toast.error(uploadResult.errorMessage);
+        }
+      } else {
+        toast.success("Berita berhasil diperbarui");
+        router.push("/dashboard/informasi/berita");
+      }
+    }
+    if (error) {
+      toast.error("Gagal memperbarui berita");
+    }
+  };
+  //
+  const handleUploadBlogImage = async ({ slug, image }) => {
+    if (!image) return { success: true };
+    const { response } = await informationApi.blog.uploadBlogImage({
+      slug,
+      image,
+    });
+    if (response) return { success: true };
+    return { success: false, errorMessage: "Gagal mengunggah gambar" };
+  };
 
   const addDataForm = useFormik({
     initialValues: {
       title: "",
       slug: "",
+      status: 0,
       author: "",
-      description: "",
+      imageDesc: "",
     },
     validationSchema: Yup.object({
-      title: Yup.string().required("Judul harus diisi"),
+      title: Yup.string()
+        .required("Judul harus diisi")
+        .min(2, "Judul minimal 2 karakter")
+        .max(255, "Judul maksimal 255 karakter")
+        .matches(/^(?!\s*$).+/, "Judul tidak boleh hanya berisi spasi")
+        .matches(/^(?!\d+$).+/, "Judul tidak boleh hanya angka")
+        .matches(/^(?!\W+$).+/, "Judul tidak boleh hanya karakter spesial")
+        // Judul tidak boleh ada "&" karena akan merusak URL
+        .test(
+          "no-ampersand",
+          "Judul tidak boleh mengandung karakter '&'",
+          (value) => {
+            return !value || !value.includes("&");
+          }
+        ),
       slug: Yup.string().required("Slug harus diisi"),
+      status: Yup.number().required("Status harus diisi"),
       author: Yup.string().required("Penulis harus diisi"),
-      description: Yup.string().required("Deskripsi harus diisi"),
+      imageDesc: Yup.string().required("Deskripsi harus diisi"),
     }),
     onSubmit: async (values) => {
-      console.log(values);
+      if (loading) return;
+      setLoading(true);
+
+      try {
+        if (!editBlogId && !editBlogSlug) {
+          // CREATE MODE
+          await handleCreateBlog({ values, content, imageUpload });
+        } else {
+          // EDIT MODE
+          await handleUpdateBlog({ values, content, imageUpload });
+        }
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
+  // SLUG GENERATOR
   useEffect(() => {
     const title = addDataForm.values.title;
     const titleToSlug = title
@@ -52,18 +154,42 @@ export default function DashboardAddInformationPage() {
   }, [addDataForm.values.title]);
 
   // EDIT MODE
-  useEffect(() => {
-    if (edit) {
+  const fetchInformationData = async () => {
+    const { response, error } = await informationApi.blog.getBlogBySlug({
+      slug: editBlogSlug,
+    });
+    const existingBlog = response?.data;
+    if (response) {
       addDataForm.setValues({
-        title: "Judul Berita Edit",
-        slug: "judul-berita-edit",
-        author: "Penulis Edit",
-        description: "Deskripsi Sampul Edit",
+        title: existingBlog.artiTitle,
+        slug: existingBlog.artiSlug,
+        status: parseInt(
+          existingBlog.artiStatus === "draft"
+            ? 0
+            : existingBlog.artiStatus === "publish"
+            ? 1
+            : 2
+        ),
+        author: existingBlog.artiPenulis,
+        imageDesc: existingBlog.artiImageDesc,
       });
-      setContent("Konten berita edit...");
-      setImageUpload("/informasi/information-placeholder.png");
+      setImageUpload(existingBlog.artiImage);
+      setContent(existingBlog.artiContent);
     }
-  }, [edit]);
+    if (error) {
+      toast.error("Gagal memuat berita");
+    }
+  };
+  //
+  useEffect(() => {
+    if (editBlogId && editBlogSlug) fetchInformationData();
+  }, [editBlogId, editBlogSlug]);
+
+  const [previewVisible, setPreviewVisible] = useState(true);
+  //
+  const togglePreview = () => {
+    setPreviewVisible((prev) => !prev);
+  };
 
   return (
     <div className="h-full overflow-hidden">
@@ -71,14 +197,24 @@ export default function DashboardAddInformationPage() {
 
       <div className="px-10 pb-16 h-full">
         <div className="pt-4 flex justify-between items-center border-b border-gray-400 pb-4">
-          <h2 className="font-bold text-2xl">Buat Berita</h2>
+          <h2 className="font-bold text-2xl">Form Berita</h2>
           {/*  */}
-          <SaveButton onClick={() => {}}>Simpan</SaveButton>
+          <SaveButton
+            name="saveBlogButton"
+            onClick={addDataForm.handleSubmit}
+            disabled={loading}
+          >
+            Simpan
+          </SaveButton>
         </div>
 
         <div className="mt-6 overflow-x-auto">
           <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-6">
+            <div
+              className={`flex flex-col gap-6 ${
+                previewVisible ? "col-span-1" : "col-span-2"
+              } ${!previewVisible ? "md:col-span-2" : ""}`}
+            >
               <Input
                 clearAutoMargin
                 label="Judul"
@@ -110,6 +246,26 @@ export default function DashboardAddInformationPage() {
                 helperText={addDataForm.touched.slug && addDataForm.errors.slug}
               />
 
+              <InputWithSelect
+                label="Status"
+                placeholder="Pilih status berita"
+                options={[
+                  { name: "Publish", value: 1 },
+                  { name: "Draft", value: 0 },
+                  // { name: "Archive", value: 2 },
+                ]}
+                name="status"
+                value={addDataForm.values.status}
+                onChange={addDataForm.handleChange}
+                error={
+                  addDataForm.touched.status &&
+                  addDataForm.errors.status !== undefined
+                }
+                helperText={
+                  addDataForm.touched.status && addDataForm.errors.status
+                }
+              />
+
               <Input
                 clearAutoMargin
                 label="Penulis"
@@ -139,16 +295,15 @@ export default function DashboardAddInformationPage() {
                 rows={3}
                 label="Deskripsi Sampul"
                 placeholder="Masukkan deskripsi sampul..."
-                name="description"
-                value={addDataForm.values.description}
+                name="imageDesc"
+                value={addDataForm.values.imageDesc}
                 onChange={addDataForm.handleChange}
                 error={
-                  addDataForm.touched.description &&
-                  addDataForm.errors.description !== undefined
+                  addDataForm.touched.imageDesc &&
+                  addDataForm.errors.imageDesc !== undefined
                 }
                 helperText={
-                  addDataForm.touched.description &&
-                  addDataForm.errors.description
+                  addDataForm.touched.imageDesc && addDataForm.errors.imageDesc
                 }
               />
 
@@ -160,46 +315,76 @@ export default function DashboardAddInformationPage() {
             </div>
 
             <div>
-              <h3 className="mb-3 font-semibold text-lg">Preview</h3>
-
-              <div className="border-t border-l border-gray-400 bg-gray-100 p-2 pt-1">
-                <HeaderDetailPage
-                  title={addDataForm.values.title || "Judul Berita"}
-                  description={`${todayOnFormat}. Ditulis oleh ${
-                    addDataForm.values.author || "Penulis"
-                  }`}
+              <div
+                className={`flex items-center gap-2
+                ${previewVisible ? "" : "mt-4 pt-4 border-t-2 border-gray-400"}
+                `}
+              >
+                <h3 className="mb-3 font-semibold text-lg">Preview</h3>
+                <Icon
+                  icon={
+                    previewVisible
+                      ? "akar-icons:chevron-down"
+                      : "akar-icons:chevron-right"
+                  }
+                  className="mb-2 cursor-pointer"
+                  onClick={togglePreview}
                 />
+              </div>
 
-                <div className="mt-2 bg-white py-2 px-3">
-                  <Image
-                    src={
-                      imageUpload && imageUpload instanceof File
-                        ? URL.createObjectURL(imageUpload)
-                        : "/informasi/information-placeholder.png"
-                    }
-                    alt="Sampul"
-                    width={500}
-                    height={500}
-                    className="w-full object-cover"
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={
+                  previewVisible
+                    ? { opacity: 1, height: "auto" }
+                    : { opacity: 0, height: 0 }
+                }
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="border-t border-l border-gray-400 bg-gray-100 p-2 pt-1">
+                  <HeaderDetailPage
+                    title={addDataForm.values.title || "Judul Berita"}
+                    description={`${todayOnFormat}. Ditulis oleh ${
+                      addDataForm.values.author || "Penulis"
+                    }`}
                   />
-                </div>
 
-                <div className="mt-2 bg-white rounded py-2 px-3">
-                  <p className="text-[#A0A0A0] text-sm">
-                    {addDataForm.values.description || "Deskripsi Sampul"}
-                  </p>
-                </div>
+                  <div className="mt-2 bg-white py-2 px-3">
+                    <Image
+                      src={
+                        imageUpload && imageUpload instanceof File
+                          ? URL.createObjectURL(imageUpload)
+                          : imageUpload
+                          ? imageUpload
+                          : "/informasi/information-placeholder.png"
+                      }
+                      alt="Sampul"
+                      width={500}
+                      height={500}
+                      className="w-full object-cover"
+                    />
+                  </div>
 
-                <div className="text-sm text-justify break-words whitespace-normal">
                   <div className="mt-2 bg-white rounded py-2 px-3">
-                    {content !== "" ? (
-                      <div dangerouslySetInnerHTML={{ __html: content }}></div>
-                    ) : (
-                      "Konten berita..."
-                    )}
+                    <p className="text-[#A0A0A0] text-sm">
+                      {addDataForm.values.imageDesc || "Deskripsi Sampul"}
+                    </p>
+                  </div>
+
+                  <div className="text-sm text-justify break-words whitespace-normal">
+                    <div className="mt-2 bg-white rounded py-2 px-3">
+                      {content !== "" ? (
+                        <div
+                          dangerouslySetInnerHTML={{ __html: content }}
+                        ></div>
+                      ) : (
+                        "Konten berita..."
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

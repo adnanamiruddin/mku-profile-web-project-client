@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function DashboardLogo() {
   return (
-    <div>
+    <Link href="/">
       <div className="flex items-center">
         <Image
           src="/logo-unhas.png"
@@ -16,6 +17,6 @@ export default function DashboardLogo() {
       <h2 className="font-sans font-semibold mt-2 uppercase">
         Universitas Hasanuddin
       </h2>
-    </div>
+    </Link>
   );
 }

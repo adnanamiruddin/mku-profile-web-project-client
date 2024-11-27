@@ -3,7 +3,7 @@ import DashboardHeader from "@/components/layouts/globals/DashboardHeader";
 import TextEditor from "@/components/layouts/TextEditor";
 import { useState } from "react";
 
-export default function DashboardEmployeePage() {
+export default function DashboardLecturerPage() {
   const [content, setContent] = useState("");
 
   return (

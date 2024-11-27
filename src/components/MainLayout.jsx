@@ -8,10 +8,10 @@ import Head from "next/head";
 import Navbar from "./layouts/globals/Navbar";
 import Footer from "./layouts/globals/Footer";
 import MobileNavMenuPopup from "./layouts/globals/MobileNavMenuPopup";
-import authApi from "@/api/modules/auth.api";
+import Sidebar from "./layouts/globals/dashboard-nav/Sidebar";
+import Cookies from "js-cookie";
 
 import "react-toastify/dist/ReactToastify.css";
-import Sidebar from "./layouts/globals/dashboard-nav/Sidebar";
 
 export default function MainLayout({ children }) {
   const dispatch = useDispatch();
@@ -19,22 +19,14 @@ export default function MainLayout({ children }) {
 
   useEffect(() => {
     const authUser = async () => {
-      // const { response, error } = await authApi.getProfile();
-      // if (response) dispatch(setUser(response.user));
-      // if (error) dispatch(setUser(null));
-
-      // MODE DEVELOPMENT
-      const user = {
-        name: "Admin MKU",
-        username: "adminmku",
-        email: "adminmku@gmail.com",
-      };
-      dispatch(setUser(user));
+      const userOnCookie = Cookies.get("lggnnusr");
+      if (userOnCookie) {
+        const user = JSON.parse(userOnCookie);
+        dispatch(setUser(user));
+        return;
+      }
+      dispatch(setUser(null));
     };
-    // if (localStorage.getItem("actkn")) authUser();
-    // else dispatch(setUser(null));
-
-    // MODE DEVELOPMENT
     authUser();
   }, [dispatch]);
 
@@ -82,19 +74,21 @@ export default function MainLayout({ children }) {
             <Footer />
           </div>
         ) : (
-          <ProtectedPage>
+          <>
             {router.pathname === "/login" ? (
               <>{children}</>
             ) : (
-              <div className="md:flex">
-                <Sidebar />
+              <ProtectedPage>
+                <div className="md:flex">
+                  <Sidebar />
 
-                <div className="w-full bg-white pt-16 md:w-4/5 md:pt-0 font-sans">
-                  {children}
+                  <div className="w-full bg-white pt-16 md:w-4/5 md:pt-0 font-sans">
+                    {children}
+                  </div>
                 </div>
-              </div>
+              </ProtectedPage>
             )}
-          </ProtectedPage>
+          </>
         )}
       </div>
     </>

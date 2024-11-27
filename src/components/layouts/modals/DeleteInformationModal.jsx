@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import ModalCancelButton from "../functions/ModalCancelButton";
 import ModalSubmitButton from "../functions/ModalSubmitButton";
 import ConfirmDeleteItemModal from "./ConfirmDeleteItemModal";
+import informationApi from "@/api/modules/information.api";
 
 export default function DeleteInformationModal({
   informationId,
@@ -12,27 +13,29 @@ export default function DeleteInformationModal({
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    // setLoading(true);
-    // const { response, error } = await mkpkSubjectApi.deleteMkpkSubject({
-    //   informationId,
-    // });
-    // if (response) {
-    //   document.getElementById("delete_information_modal").close();
-    //   document.getElementById("confirm_delete_item_modal").close();
-    //   toast.success("Berita berhasil dihapus");
-    //   //
-    //   setLoading(false);
-    //   fetchInformationsData();
-    // }
-    // if (error) {
-    //   document.getElementById("delete_information_modal").close();
-    //   document.getElementById("confirm_delete_item_modal").close();
-    //   toast.error(
-    //     "Tidak dapat menghapus berita yang memiliki data terkait di dalamnya"
-    //   );
-    //   //
-    //   setLoading(false);
-    // }
+    setLoading(true);
+    const { response, error } = await informationApi.blog.deleteBlog({
+      blogId: informationId,
+    });
+    if (response) {
+      document.getElementById("delete_information_modal").close();
+      document.getElementById("confirm_delete_item_modal").close();
+      toast.success("Berita berhasil dihapus");
+      //
+      setLoading(false);
+      setInformationId(null);
+      fetchInformationsData();
+    }
+    if (error) {
+      document.getElementById("delete_information_modal").close();
+      document.getElementById("confirm_delete_item_modal").close();
+      toast.error(
+        "Gagal menghapus berita. Silakan coba lagi atau hubungi administrator"
+      );
+      //
+      setLoading(false);
+      setInformationId(null);
+    }
   };
 
   return (

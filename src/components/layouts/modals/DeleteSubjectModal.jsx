@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import ModalCancelButton from "../functions/ModalCancelButton";
 import ModalSubmitButton from "../functions/ModalSubmitButton";
 import ConfirmDeleteItemModal from "./ConfirmDeleteItemModal";
+import subjectApi from "@/api/modules/subject.api";
 
 export default function DeleteSubjectModal({
   subjectId,
@@ -12,27 +13,29 @@ export default function DeleteSubjectModal({
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    // setLoading(true);
-    // const { response, error } = await mkpkSubjectApi.deleteMkpkSubject({
-    //   subjectId,
-    // });
-    // if (response) {
-    //   document.getElementById("delete_subject_modal").close();
-    //   document.getElementById("confirm_delete_item_modal").close();
-    //   toast.success("Mata kuliah berhasil dihapus");
-    //   //
-    //   setLoading(false);
-    //   fetchSubjectsData();
-    // }
-    // if (error) {
-    //   document.getElementById("delete_subject_modal").close();
-    //   document.getElementById("confirm_delete_item_modal").close();
-    //   toast.error(
-    //     "Tidak dapat menghapus mata kuliah yang memiliki data terkait di dalamnya"
-    //   );
-    //   //
-    //   setLoading(false);
-    // }
+    setLoading(true);
+    const { response, error } = await subjectApi.deleteSubject({
+      subjectId,
+    });
+    if (response) {
+      document.getElementById("delete_subject_modal").close();
+      document.getElementById("confirm_delete_item_modal").close();
+      toast.success("Data mata kuliah berhasil dihapus");
+      //
+      setLoading(false);
+      setSubjectId(null);
+      fetchSubjectsData();
+    }
+    if (error) {
+      document.getElementById("delete_subject_modal").close();
+      document.getElementById("confirm_delete_item_modal").close();
+      toast.error(
+        "Gagal menghapus data mata kuliah. Silakan coba lagi atau hubungi administrator"
+      );
+      //
+      setLoading(false);
+      setSubjectId(null);
+    }
   };
 
   return (

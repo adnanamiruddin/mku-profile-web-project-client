@@ -8,15 +8,15 @@ const authEndpoint = {
 };
 
 const authApi = {
-  createToken: async () => {
+  createToken: async ({ username, password }) => {
     try {
       const response = await publicClient.post(authEndpoint.createToken, {
-        email: process.env.NEXT_PUBLIC_TOKEN_EMAIL,
-        password: process.env.NEXT_PUBLIC_TOKEN_PW,
+        account: username,
+        password,
       });
-      if (response.token) {
-        localStorage.setItem("actkn", response.token);
-        return response.token;
+      if (response.accessToken) {
+        localStorage.setItem("actkn", response.accessToken);
+        return response;
       }
     } catch (error) {
       return { error };
@@ -26,7 +26,7 @@ const authApi = {
   loginUser: async ({ username, password }) => {
     try {
       const response = await privateClient.post(authEndpoint.login, {
-        username,
+        account: username,
         password,
       });
       return { response };

@@ -3,25 +3,25 @@ import queryString from "query-string";
 
 const baseURL = process.env.NEXT_PUBLIC_SERVER_URL;
 
-const privateClient = axios.create({
+const privateClientFile = axios.create({
   baseURL,
   paramsSerializer: {
     encode: (params) => queryString.stringify(params),
   },
 });
 
-privateClient.interceptors.request.use(async (config) => {
+privateClientFile.interceptors.request.use(async (config) => {
   return {
     ...config,
     headers: {
       ...config.headers,
-      "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${localStorage.getItem("actkn")}`,
     },
   };
 });
 
-privateClient.interceptors.response.use(
+privateClientFile.interceptors.response.use(
   (response) => {
     if (response && response.data) return response.data;
     return response;
@@ -31,4 +31,4 @@ privateClient.interceptors.response.use(
   }
 );
 
-export default privateClient;
+export default privateClientFile;

@@ -1,10 +1,43 @@
+import aboutApi from "@/api/modules/about.api";
 import SaveButton from "@/components/layouts/functions/SaveButton";
 import DashboardHeader from "@/components/layouts/globals/DashboardHeader";
 import TextEditor from "@/components/layouts/TextEditor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function DashboardProfilePage() {
+  const [loading, setLoading] = useState(false);
+  //
   const [content, setContent] = useState("");
+
+  const handleSaveProfile = async () => {
+    setLoading(true);
+    const { response, error } = await aboutApi.profile.saveProfile({
+      content,
+    });
+    if (response) {
+      toast.success("Profil berhasil diperbarui");
+      setLoading(false);
+    }
+    if (error) {
+      toast.error("Gagal memperbarui profil");
+      setLoading(false);
+    }
+  };
+
+  const fetchProfileData = async () => {
+    const { response, error } = await aboutApi.profile.getProfile();
+    if (response) {
+      setContent(response.profilContent);
+    }
+    if (error) {
+      toast.error("Gagal memuat data profil");
+    }
+  };
+  //
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
 
   return (
     <div className="h-full overflow-hidden">
@@ -12,35 +45,15 @@ export default function DashboardProfilePage() {
 
       <div className="px-10 pb-16 h-full">
         <div className="pt-4 flex justify-between items-center border-b border-gray-400 pb-4">
-          <h2 className="font-bold text-2xl">Profil</h2>
+          <h2 className="font-bold text-2xl">Konten Profil</h2>
           {/*  */}
-          <SaveButton onClick={() => {}}>Simpan</SaveButton>
+          <SaveButton onClick={handleSaveProfile} disabled={loading}>
+            Simpan
+          </SaveButton>
         </div>
 
-        <div className="mt-6 overflow-x-auto">
-          <div className="grid grid-cols-2 gap-4">
-            <TextEditor
-              label="Konten"
-              content={content}
-              setContent={setContent}
-            />
-
-            <div>
-              <h3 className="mb-3 font-semibold text-lg">Preview</h3>
-
-              <div className="border-t border-l border-gray-400 bg-gray-100 p-2">
-                <div className="text-sm text-justify break-words whitespace-normal">
-                  <div className="my-1 bg-white rounded py-2 px-3 min-h-24">
-                    {content !== "" ? (
-                      <div dangerouslySetInnerHTML={{ __html: content }}></div>
-                    ) : (
-                      "Profil Mata Kuliah Umum..."
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="mt-4 overflow-x-auto">
+          <TextEditor content={content} setContent={setContent} />
         </div>
       </div>
     </div>

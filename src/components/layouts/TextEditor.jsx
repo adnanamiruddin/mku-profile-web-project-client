@@ -17,6 +17,7 @@ export default function TextEditor({ label, content, setContent }) {
         { indent: "+1" },
       ],
       ["link", "image", "video"],
+      [{ align: [] }],
       ["clean"],
     ],
     clipboard: {

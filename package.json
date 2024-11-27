@@ -11,6 +11,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
     "date-fns": "^4.1.0",
+    "framer-motion": "^11.11.17",
+    "js-cookie": "^3.0.5",
     "next": "14.2.5",
     "quill-resize-image": "^1.0.5",
     "react": "^18",

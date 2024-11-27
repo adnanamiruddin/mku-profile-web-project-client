@@ -3,13 +3,30 @@ import ModalCancelButton from "../functions/ModalCancelButton";
 import ModalSubmitButton from "../functions/ModalSubmitButton";
 import UploadFileField from "../functions/UploadFileField";
 import Image from "next/image";
+import informationApi from "@/api/modules/information.api";
+import { toast } from "react-toastify";
 
-export default function EditMkuMapModal({ mkuMapImage }) {
-  const [imageUpload, setImageUpload] = useState(null);
+export default function EditMkuMapModal({ mkuMapImage, setMkuMapImage }) {
   const [loading, setLoading] = useState(false);
+  //
+  const [imageUpload, setImageUpload] = useState(null);
 
-  const handleUpdateData = async () => {
-    //
+  const handleSaveMap = async () => {
+    setLoading(true);
+    const { response, error } = await informationApi.map.saveMap({
+      image: imageUpload,
+    });
+    if (response) {
+      document.getElementById("edit_mku_map_modal").close();
+      setMkuMapImage(URL.createObjectURL(imageUpload));
+      toast.success("Peta MKU berhasil diperbarui");
+      setLoading(false);
+    }
+    if (error) {
+      document.getElementById("edit_mku_map_modal").close();
+      toast.error("Gagal memperbarui peta MKU");
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,7 +70,7 @@ export default function EditMkuMapModal({ mkuMapImage }) {
             Batal
           </ModalCancelButton>
           {/*  */}
-          <ModalSubmitButton loading={loading} onClick={() => handleUpdateData}>
+          <ModalSubmitButton loading={loading} onClick={handleSaveMap}>
             Simpan
           </ModalSubmitButton>
         </div>

@@ -25,6 +25,7 @@ export default function Sidebar() {
           {nav.items.map((item, j) => (
             <Link
               key={j}
+              id={item.label}
               href={item.href}
               className={`flex items-center gap-4 py-2.5 px-8 font-semibold hover:bg-emerald-100 hover:text-emerald-600 transition-all duration-300 ease-in-out focus:outline-none focus:text-emerald-600 focus:bg-emerald-200 ${
                 router.pathname === item.href

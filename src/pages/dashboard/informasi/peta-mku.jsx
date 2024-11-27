@@ -1,11 +1,29 @@
+import informationApi from "@/api/modules/information.api";
 import EditButton from "@/components/layouts/functions/EditButton";
 import DashboardHeader from "@/components/layouts/globals/DashboardHeader";
 import EditMkuMapModal from "@/components/layouts/modals/EditMkuMapModal";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function DashboardMkuMapPage() {
-  const [mkuMapImage, setMkuMapImage] = useState("/home-map.png");
+  const [mkuMapImage, setMkuMapImage] = useState(
+    "/informasi/information-placeholder.png"
+  );
+
+  const fetchmKUmAPData = async () => {
+    const { response, error } = await informationApi.map.getMap();
+    if (response) {
+      setMkuMapImage(response.fileUrl);
+    }
+    if (error) {
+      toast.error("Gagal memuat data peta MKU");
+    }
+  };
+  //
+  useEffect(() => {
+    fetchmKUmAPData();
+  }, []);
 
   return (
     <div className="h-full overflow-hidden">
@@ -36,7 +54,10 @@ export default function DashboardMkuMapPage() {
         </div>
       </div>
 
-      <EditMkuMapModal mkuMapImage={mkuMapImage} />
+      <EditMkuMapModal
+        mkuMapImage={mkuMapImage}
+        setMkuMapImage={setMkuMapImage}
+      />
     </div>
   );
 }

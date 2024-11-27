@@ -2,7 +2,12 @@ import { Icon } from "@iconify/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function SubjectDropdown({ title, showBorderTop, children }) {
+export default function SubjectDropdown({
+  title,
+  slug,
+  showBorderTop,
+  children,
+}) {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +33,7 @@ export default function SubjectDropdown({ title, showBorderTop, children }) {
           {isOpen ? (
             <Icon
               icon="iconamoon:eye"
-              onClick={() => router.push(`/mata-kuliah/${title}`)}
+              onClick={() => router.push(`/mata-kuliah/${slug}`)}
               className="text-2xl cursor-pointer"
             />
           ) : null}

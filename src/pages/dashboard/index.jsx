@@ -30,19 +30,11 @@ export default function DashboardHomePage() {
         </div>
       </div>
 
-      <div className="ps-20 pe-12 pt-8 flex justify-between gap-16">
-        <div className="w-1/2">
-          <h1 className="font-bold text-4xl">{user.name || user.username}</h1>
-          <p className="mt-4 text-xl">{user.username}</p>
-        </div>
-
-        <div className="w-1/2 flex justify-between items-center gap-3">
-          <div className="text-lg w-full">
-            <div className="flex">
-              <h3 className="font-bold w-[20%]">Email</h3>
-              <p className="break-words pe-4">{user.email || "-"}</p>
-            </div>
-          </div>
+      <div className="ps-20 pe-12 pt-8">
+        <div className="w-full">
+          <h5 className="font-bold text-4xl">
+            {user.account || user.name || user.username}
+          </h5>
         </div>
       </div>
     </div>

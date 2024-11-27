@@ -1,10 +1,38 @@
-import Dropdown from "@/components/layouts/SubjectDropdown";
+import subjectApi from "@/api/modules/subject.api";
 import SectionTitle from "@/components/layouts/SectionTitle";
 import SubjectItem from "@/components/layouts/SubjectItem";
 import HeaderDetailPage from "@/components/layouts/globals/HeaderDetailPage";
-import { dummySubjectList } from "@/data/staticData";
+import Loading from "@/components/layouts/globals/Loading";
+import NotFound from "@/components/layouts/globals/NotFound";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function SubjectsPage() {
+  const [mkwuSubjects, setMkwuSubjects] = useState([]);
+  const [basicScienceSubjects, setBasicScienceSubjects] = useState([]);
+  //
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [errorDataLoaded, setErrorDataLoaded] = useState(false);
+
+  const fetchSubjectsData = async () => {
+    const { response, error } = await subjectApi.getAllSubjects();
+    if (response) {
+      setMkwuSubjects(response.mkwu);
+      setBasicScienceSubjects(response.sains);
+      setTimeout(() => {
+        setIsDataLoaded(true);
+      }, 1000);
+    }
+    if (error) {
+      setErrorDataLoaded(true);
+      toast.error("Gagal memuat data");
+    }
+  };
+  //
+  useEffect(() => {
+    fetchSubjectsData();
+  }, []);
+
   return (
     <div className="md:mt-10">
       {/* MKWU */}
@@ -18,46 +46,48 @@ export default function SubjectsPage() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row md:gap-1">
-        <div className="md:hidden">
-          <HeaderDetailPage
-            title="10 Mata Kuliah"
-            description="Bulan Oktober 2024"
-          />
-        </div>
+      {errorDataLoaded ? (
+        <NotFound />
+      ) : isDataLoaded ? (
+        <div className="flex flex-col md:flex-row md:gap-1">
+          <div className="md:hidden">
+            <HeaderDetailPage
+              title="10 Mata Kuliah"
+              description="Bulan Oktober 2024"
+            />
+          </div>
 
-        <div className="md:w-1/2">
-          {dummySubjectList.map((subject, i) => (
-            <>
-              {subject.type === "Mata Kuliah Wajib Umum" ? (
-                <SubjectItem key={i} subject={subject} color="orange" />
-              ) : null}
-            </>
-          ))}
-        </div>
+          <div className="md:w-1/2">
+            <SubjectItem
+              title="Mata Kuliah Wajib Umum"
+              subjects={mkwuSubjects}
+              color="orange"
+            />
+          </div>
 
-        {/* Basic Sains */}
-        <div className="md:hidden">
-          <SectionTitle title="Basic Sains" />
-        </div>
+          {/* Basic Sains */}
+          <div className="md:hidden">
+            <SectionTitle title="Basic Sains" />
+          </div>
 
-        <div className="md:hidden">
-          <HeaderDetailPage
-            title="5 Mata Kuliah"
-            description="Bulan Oktober 2024"
-          />
-        </div>
+          <div className="md:hidden">
+            <HeaderDetailPage
+              title="5 Mata Kuliah"
+              description="Bulan Oktober 2024"
+            />
+          </div>
 
-        <div className="md:w-1/2">
-          {dummySubjectList.map((subject, i) => (
-            <>
-              {subject.type === "Basic Sains" ? (
-                <SubjectItem key={i} subject={subject} color="green" />
-              ) : null}
-            </>
-          ))}
+          <div className="md:w-1/2">
+            <SubjectItem
+              title="Basic Sains"
+              subjects={basicScienceSubjects}
+              color="green"
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }
