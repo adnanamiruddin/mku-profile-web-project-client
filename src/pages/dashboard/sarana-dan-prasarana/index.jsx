@@ -47,13 +47,21 @@ export default function DashboardFacilitiesPage() {
         <div className="pt-4 flex justify-between items-center border-b border-gray-400 pb-4">
           <h2 className="font-bold text-2xl">Konten Fasilitas</h2>
           {/*  */}
-          <SaveButton onClick={handleSaveFacilities} disabled={loading}>
+          <SaveButton
+            name="saveFacilitiesButton"
+            onClick={handleSaveFacilities}
+            disabled={loading}
+          >
             Simpan
           </SaveButton>
         </div>
 
         <div className="mt-4 overflow-x-auto">
-          <TextEditor content={content} setContent={setContent} />
+          <TextEditor
+            id="facilitiesTextEditor"
+            content={content}
+            setContent={setContent}
+          />
         </div>
       </div>
     </div>

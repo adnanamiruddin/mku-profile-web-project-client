@@ -80,7 +80,7 @@ export const AdminNav = [
     items: workProgramNavItems,
   },
   {
-    title: "SARANA & PRASARANA",
+    title: "SARANA",
     items: facilityNavItems,
   },
 ];

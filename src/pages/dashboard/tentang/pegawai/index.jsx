@@ -13,15 +13,17 @@ import { toast } from "react-toastify";
 import Pagination from "@/components/layouts/functions/Pagination";
 import LoadingPagination from "@/components/layouts/globals/LoadingPagination";
 import { formatDateWithTimeToIndo } from "@/helpers/dateHelper";
+import aboutApi from "@/api/modules/about.api";
+import DeleteLecturerDataModal from "@/components/layouts/modals/DeleteLecturerDataModal";
 
-export default function DashboardInformationPage() {
+export default function DashboardLecturerPage() {
   const router = useRouter();
 
-  const [informations, setInformations] = useState([]);
+  const [lecturers, setLecturers] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [errorDataLoaded, setErrorDataLoaded] = useState(false);
   //
-  const [selectedInformationIdToDelete, setSelectedInformationIdToDelete] =
+  const [selectedLecturerIdToDelete, setSelectedLecturerIdToDelete] =
     useState(null);
 
   // Pagination State
@@ -29,13 +31,13 @@ export default function DashboardInformationPage() {
   const [totalPage, setTotalPage] = useState(1);
   const [loadingPagination, setLoadingPagination] = useState(false);
 
-  const fetchInformationsData = async () => {
+  const fetchLecturersData = async () => {
     setLoadingPagination(true);
-    const { response, error } = await informationApi.blog.getAllBlogs({
+    const { response, error } = await aboutApi.lecturer.getAllLecturers({
       page,
     });
     if (response) {
-      setInformations(response.data);
+      setLecturers(response.data);
       setTotalPage(response.pagination.lastPage);
       setTimeout(() => {
         setIsDataLoaded(true);
@@ -49,23 +51,23 @@ export default function DashboardInformationPage() {
   };
   //
   useEffect(() => {
-    fetchInformationsData();
+    fetchLecturersData();
   }, [page]);
 
   return (
     <div className="h-full overflow-hidden">
-      <DashboardHeader>BERITA</DashboardHeader>
+      <DashboardHeader>PEGAWAI</DashboardHeader>
 
       {errorDataLoaded ? (
         <NotFound />
       ) : isDataLoaded ? (
         <div className="px-10 pb-16 h-full">
           <div className="pt-4 flex justify-between items-center">
-            <h2 className="font-bold text-2xl">Daftar Berita</h2>
+            <h2 className="font-bold text-2xl">Daftar Pegawai</h2>
             {/*  */}
             <AddDataButton
-              name="createBlogButton"
-              onClick={() => router.push("/dashboard/informasi/berita/tambah")}
+              name="createLecturerDataButton"
+              onClick={() => router.push("/dashboard/tentang/pegawai/tambah")}
             >
               Buat
             </AddDataButton>
@@ -76,9 +78,9 @@ export default function DashboardInformationPage() {
               <thead>
                 <tr className="w-full text-black flex items-center gap-2 py-3 px-1 border-b-2 border-gray-300 text-lg">
                   <th className="w-[5%] text-start">No</th>
-                  <th className="w-[40%] text-start">Judul</th>
-                  <th className="w-[15%] text-start">Status</th>
-                  <th className="w-[20%] text-start">Dibuat Pada</th>
+                  <th className="w-[20%] text-start">NIP</th>
+                  <th className="w-[30%] text-start">Nama</th>
+                  <th className="w-[25%] text-start">Dibuat Pada</th>
                   <th className="w-[20%] text-start">Aksi</th>
                 </tr>
               </thead>
@@ -86,40 +88,29 @@ export default function DashboardInformationPage() {
                 <LoadingPagination />
               ) : (
                 <>
-                  {informations?.length > 0 ? (
+                  {lecturers.length > 0 ? (
                     <tbody>
-                      {informations.map((information, i) => (
+                      {lecturers.map((lecturer, i) => (
                         <tr
                           key={i}
                           className="text-black flex items-center gap-2 py-5 px-1 border-b-2 border-gray-300"
                         >
                           <td className="w-[5%] text-start ps-2">{i + 1}</td>
-                          <td className="w-[40%] text-start underline hover:text-blue-500 break-words">
-                            <Link
-                              href={`/informasi/${information.artiSlug}`}
-                              target="_blank"
-                            >
-                              {information.artiTitle}
-                            </Link>
-                          </td>
-                          <td
-                            className={`w-[12%] me-[3%] text-center py-1.5 rounded font-medium capitalize ${
-                              information.artiStatus === "draft"
-                                ? "bg-[#E2E2E2]"
-                                : "bg-[#9CFF9C]"
-                            }`}
-                          >
-                            {information.artiStatus}
-                          </td>
                           <td className="w-[20%] text-start">
-                            {formatDateWithTimeToIndo(information.createdAt)}
+                            {lecturer.dsnNip}
+                          </td>
+                          <td className="w-[30%] text-start">
+                            {lecturer.dsnNama}
+                          </td>
+                          <td className="w-[25%] text-start">
+                            {formatDateWithTimeToIndo(lecturer.createdAt)}
                           </td>
                           <td className="w-[20%] text-start flex items-center gap-2">
                             <EditButton
-                              name={`editBlogButton${information.id}`}
+                              name={`editLecturerDataButton${lecturer.id}`}
                               onClick={() =>
                                 router.push(
-                                  `/dashboard/informasi/berita/tambah?editBlogId=${information.id}&editBlogSlug=${information.artiSlug}`
+                                  `/dashboard/tentang/pegawai/tambah?editLecturerId=${lecturer.id}&editLecturerNip=${lecturer.dsnNip}`
                                 )
                               }
                             >
@@ -127,13 +118,11 @@ export default function DashboardInformationPage() {
                             </EditButton>
                             {/*  */}
                             <DeleteButton
-                              name={`deleteBlogButton${information.id}`}
+                              name={`deleteLecturerDataButton${lecturer.id}`}
                               onClick={() => {
-                                setSelectedInformationIdToDelete(
-                                  information.id
-                                );
+                                setSelectedLecturerIdToDelete(lecturer.id);
                                 document
-                                  .getElementById("delete_information_modal")
+                                  .getElementById("delete_lecturer_data_modal")
                                   .showModal();
                               }}
                             >
@@ -161,10 +150,10 @@ export default function DashboardInformationPage() {
         <Loading />
       )}
 
-      <DeleteInformationModal
-        informationId={selectedInformationIdToDelete}
-        setInformationId={setSelectedInformationIdToDelete}
-        fetchInformationsData={fetchInformationsData}
+      <DeleteLecturerDataModal
+        lecturerId={selectedLecturerIdToDelete}
+        setLecturerId={setSelectedLecturerIdToDelete}
+        fetchLecturersData={fetchLecturersData}
       />
     </div>
   );

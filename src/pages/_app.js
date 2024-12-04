@@ -2,6 +2,7 @@ import MainLayout from "@/components/MainLayout";
 import store from "@/redux/store";
 import { Provider } from "react-redux";
 
+import "aos/dist/aos.css";
 import "@/styles/globals.css";
 import "@/styles/loading.css";
 import "@/styles/not-found.css";

@@ -1,6 +1,12 @@
-export default function ModalSubmitButton({ loading, onClick, children }) {
+export default function ModalSubmitButton({
+  name,
+  loading,
+  onClick,
+  children,
+}) {
   return (
     <button
+      name={name}
       type="button"
       onClick={loading ? null : onClick}
       className={`py-1.5 w-36 border border-emerald-700 bg-emerald-700 rounded text-white hover:bg-emerald-600 hover:border-emerald-500 focus:bg-emerald-800 focus:border-emerald-600 ${

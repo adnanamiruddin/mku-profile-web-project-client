@@ -42,6 +42,7 @@ export default function EditMkuMapModal({ mkuMapImage, setMkuMapImage }) {
         </h1>
 
         <UploadFileField
+          name="imageUpload"
           label="Upload Foto"
           onChange={(e) => {
             setImageUpload(e.target.files[0]);
@@ -62,6 +63,7 @@ export default function EditMkuMapModal({ mkuMapImage, setMkuMapImage }) {
 
         <div className="mt-6 flex justify-end items-center gap-3">
           <ModalCancelButton
+            name="cancelMkuMapButton"
             loading={loading}
             onClick={() =>
               document.getElementById("edit_mku_map_modal").close()
@@ -70,7 +72,11 @@ export default function EditMkuMapModal({ mkuMapImage, setMkuMapImage }) {
             Batal
           </ModalCancelButton>
           {/*  */}
-          <ModalSubmitButton loading={loading} onClick={handleSaveMap}>
+          <ModalSubmitButton
+            name="saveMkuMapButton"
+            loading={loading}
+            onClick={handleSaveMap}
+          >
             Simpan
           </ModalSubmitButton>
         </div>

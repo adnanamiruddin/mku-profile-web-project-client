@@ -73,7 +73,7 @@ export default function DashboardAddSubjectPage() {
     initialValues: {
       name: "",
       slug: "",
-      category: 1,
+      category: 2,
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -105,7 +105,6 @@ export default function DashboardAddSubjectPage() {
         toast.error("RPS mata kuliah harus diunggah");
         return;
       }
-
       if (loading) return;
       setLoading(true);
 
@@ -134,7 +133,7 @@ export default function DashboardAddSubjectPage() {
         if (rpsDocument && rpsDocument instanceof File) {
           const { response: uploadRpsResponse, error: uploadRpsError } =
             await subjectApi.uploadSubjectRps({
-              slug: values.slug,
+              slug: response.mk.mkSlug || values.slug,
               rpsDocument,
             });
           if (uploadRpsResponse) isSuccessfulSubmit = true;
@@ -146,7 +145,7 @@ export default function DashboardAddSubjectPage() {
             response: uploadLecturerResponse,
             error: uploadLecturerError,
           } = await subjectApi.uploadSubjectLecturer({
-            slug: values.slug,
+            slug: response.mk.mkSlug || values.slug,
             lecturerDocument,
           });
           if (uploadLecturerResponse) isSuccessfulSubmit = true;
@@ -158,7 +157,7 @@ export default function DashboardAddSubjectPage() {
             response: uploadScheduleResponse,
             error: uploadScheduleError,
           } = await subjectApi.uploadSubjectSchedule({
-            slug: values.slug,
+            slug: response.mk.mkSlug || values.slug,
             scheduleDocument,
           });
           if (uploadScheduleResponse) isSuccessfulSubmit = true;
@@ -170,7 +169,7 @@ export default function DashboardAddSubjectPage() {
             response: uploadMonitoringResponse,
             error: uploadMonitoringError,
           } = await subjectApi.uploadSubjectMonitoring({
-            slug: values.slug,
+            slug: response.mk.mkSlug || values.slug,
             monitoringDocument,
           });
           if (uploadMonitoringResponse) isSuccessfulSubmit = true;
@@ -182,7 +181,7 @@ export default function DashboardAddSubjectPage() {
             response: uploadEvaluationResponse,
             error: uploadEvaluationError,
           } = await subjectApi.uploadSubjectEvaluation({
-            slug: values.slug,
+            slug: response.mk.mkSlug || values.slug,
             evaluationDocument,
           });
           if (uploadEvaluationResponse) isSuccessfulSubmit = true;
@@ -208,7 +207,10 @@ export default function DashboardAddSubjectPage() {
       }
       if (error) {
         toast.error(
-          `Gagal ${!editSubjectId ? "menambahkan" : "memperbarui"} mata kuliah`
+          error.message ||
+            `Gagal ${
+              !editSubjectId ? "menambahkan" : "memperbarui"
+            } mata kuliah`
         );
         setLoading(false);
       }
@@ -266,9 +268,13 @@ export default function DashboardAddSubjectPage() {
 
       <div className="px-10 pb-16">
         <div className="pt-4 flex justify-between items-center border-b border-gray-400 pb-4">
-          <h2 className="font-bold text-2xl">Tambah Mata Kuliah</h2>
+          <h2 className="font-bold text-2xl">Form Data Mata Kuliah</h2>
           {/*  */}
-          <SaveButton onClick={addDataForm.handleSubmit} disabled={loading}>
+          <SaveButton
+            name="saveSubjectButton"
+            onClick={addDataForm.handleSubmit}
+            disabled={loading}
+          >
             Simpan
           </SaveButton>
         </div>
@@ -276,30 +282,44 @@ export default function DashboardAddSubjectPage() {
         <div className="mt-6 overflow-x-auto bg-gray-100 h-full p-3">
           <div className="bg-white rounded p-6 flex flex-col justify-center items-center gap-3">
             <div>
-              <input
-                type="text"
-                name="name"
-                value={addDataForm.values.name}
-                onChange={addDataForm.handleChange}
-                placeholder="Masukkan Nama Mata Kuliah"
-                className="text-2xl font-semibold text-center bg-transparent border-none outline-none w-full"
-              />
+              <div>
+                <input
+                  type="text"
+                  name="name"
+                  value={addDataForm.values.name}
+                  onChange={addDataForm.handleChange}
+                  placeholder="Masukkan Nama Mata Kuliah"
+                  className="text-2xl font-semibold text-center bg-transparent border-none outline-none w-full"
+                />
+                {addDataForm.touched.name && addDataForm.errors.name ? (
+                  <p className="mt-1 text-error text-xs text-center">
+                    {addDataForm.errors.name}
+                  </p>
+                ) : null}
+              </div>
 
-              <input
-                type="text"
-                name="slug"
-                value={addDataForm.values.slug}
-                onChange={addDataForm.handleChange}
-                placeholder="Masukkan Kategori Mata Kuliah"
-                className="text-base text-center mt-4 bg-transparent border-none outline-none w-full"
-              />
+              <div>
+                <input
+                  type="text"
+                  name="slug"
+                  value={addDataForm.values.slug}
+                  onChange={addDataForm.handleChange}
+                  placeholder="Masukkan Kategori Mata Kuliah"
+                  className="text-base text-center mt-4 bg-transparent border-none outline-none w-full"
+                />
+                {addDataForm.touched.slug && addDataForm.errors.slug ? (
+                  <p className="mt-1 text-error text-xs text-center">
+                    {addDataForm.errors.slug}
+                  </p>
+                ) : null}
+              </div>
 
               <div className="mt-4">
                 <InputWithSelect
                   placeholder="Pilih kategori"
                   options={[
-                    { name: "Basic Sains", value: 1 },
                     { name: "Mata Kuliah Wajib Umum", value: 2 },
+                    { name: "Basic Sains", value: 1 },
                   ]}
                   name="category"
                   value={addDataForm.values.category}
@@ -317,6 +337,7 @@ export default function DashboardAddSubjectPage() {
 
             <div className="w-full">
               <UploadFileField
+                name="rpsUpload"
                 onlyPdf
                 label="RPS"
                 onChange={(e) => setRpsDocument(e.target.files[0])}
@@ -327,6 +348,7 @@ export default function DashboardAddSubjectPage() {
 
             <div className="w-full">
               <UploadFileField
+                name="lecturerUpload"
                 onlyPdf
                 label="Dosen Pengampu"
                 onChange={(e) => setLecturerDocument(e.target.files[0])}
@@ -337,6 +359,7 @@ export default function DashboardAddSubjectPage() {
 
             <div className="w-full">
               <UploadFileField
+                name="scheduleUpload"
                 onlyPdf
                 label="Jadwal Perkuliahan"
                 onChange={(e) => setScheduleDocument(e.target.files[0])}
@@ -347,6 +370,7 @@ export default function DashboardAddSubjectPage() {
 
             <div className="w-full">
               <UploadFileField
+                name="monitoringUpload"
                 onlyPdf
                 label="Monitoring Perkuliahan"
                 onChange={(e) => setMonitoringDocument(e.target.files[0])}
@@ -357,6 +381,7 @@ export default function DashboardAddSubjectPage() {
 
             <div className="w-full">
               <UploadFileField
+                name="evaluationUpload"
                 onlyPdf
                 label="Evaluasi Perkuliahan"
                 onChange={(e) => setEvaluationDocument(e.target.files[0])}

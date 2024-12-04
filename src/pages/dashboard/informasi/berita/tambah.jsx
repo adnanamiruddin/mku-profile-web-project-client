@@ -50,12 +50,12 @@ export default function DashboardAddInformationPage() {
       }
     }
     if (error) {
-      toast.error("Gagal membuat berita");
+      toast.error(error.message || "Gagal membuat berita");
     }
   };
   //
   const handleUpdateBlog = async ({ values, content, imageUpload }) => {
-    const { response, error } = await informationApi.updateBlog({
+    const { response, error } = await informationApi.blog.updateBlog({
       blogId: editBlogId,
       title: values.title,
       slug: values.slug,
@@ -82,7 +82,7 @@ export default function DashboardAddInformationPage() {
       }
     }
     if (error) {
-      toast.error("Gagal memperbarui berita");
+      toast.error(error.message || "Gagal memperbarui berita");
     }
   };
   //
@@ -126,6 +126,10 @@ export default function DashboardAddInformationPage() {
       imageDesc: Yup.string().required("Deskripsi harus diisi"),
     }),
     onSubmit: async (values) => {
+      if (content === "") {
+        toast.error("Konten berita tidak boleh kosong");
+        return;
+      }
       if (loading) return;
       setLoading(true);
 
@@ -212,8 +216,8 @@ export default function DashboardAddInformationPage() {
           <div className="grid grid-cols-2 gap-4">
             <div
               className={`flex flex-col gap-6 ${
-                previewVisible ? "col-span-1" : "col-span-2"
-              } ${!previewVisible ? "md:col-span-2" : ""}`}
+                !previewVisible ? "col-span-2" : ""
+              }`}
             >
               <Input
                 clearAutoMargin
@@ -283,6 +287,7 @@ export default function DashboardAddInformationPage() {
               />
 
               <UploadFileField
+                name="imageUpload"
                 clearAutoMargin
                 label="Sampul Berita"
                 onChange={(e) => {
@@ -308,6 +313,7 @@ export default function DashboardAddInformationPage() {
               />
 
               <TextEditor
+                id="blogTextEditor"
                 label="Konten"
                 content={content}
                 setContent={setContent}

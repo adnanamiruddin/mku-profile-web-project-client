@@ -10,11 +10,11 @@ export default function InformationItem({ information }) {
     >
       <Image
         priority
-        src={information.artiImage}
+        src={information.artiImage ? information.artiImage : "/home-image.png"}
         alt={information.artiTitle}
         width={500}
         height={500}
-        className="w-full h-56 object-cover rounded-t-md"
+        className="w-96 h-56 object-cover rounded-t-md"
       />
       {/*  */}
       <div className="py-4">

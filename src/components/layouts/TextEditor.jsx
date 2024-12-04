@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-export default function TextEditor({ label, content, setContent }) {
+export default function TextEditor({ id, label, content, setContent }) {
   const modules = {
     toolbar: [
       [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -30,6 +30,7 @@ export default function TextEditor({ label, content, setContent }) {
       <h3 className="mb-3 font-semibold text-lg">{label}</h3>
 
       <ReactQuill
+        id={id}
         theme="snow"
         formats={[
           "header",

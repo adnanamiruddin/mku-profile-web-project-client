@@ -4,8 +4,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import InnerDropdown from "./InnerDropdown";
 
-
-
 const MenuItem = ({ item, handleNavLinkItemClicked }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -106,6 +104,11 @@ export default function MobileNavMenuPopup({ setIsMobileNavMenuOpen }) {
       name: "Program Kerja",
       type: "hyperlink",
       href: "/program-kerja",
+    },
+    {
+      name: "Sarana & Prasarana",
+      type: "hyperlink",
+      href: "/sarana-dan-prasarana",
     },
   ];
 

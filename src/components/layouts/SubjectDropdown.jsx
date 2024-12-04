@@ -32,6 +32,7 @@ export default function SubjectDropdown({
         <div className="flex gap-2">
           {isOpen ? (
             <Icon
+              id={`icon-${slug}`}
               icon="iconamoon:eye"
               onClick={() => router.push(`/mata-kuliah/${slug}`)}
               className="text-2xl cursor-pointer"

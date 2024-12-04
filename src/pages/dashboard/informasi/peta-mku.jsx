@@ -34,6 +34,7 @@ export default function DashboardMkuMapPage() {
           <h2 className="font-bold text-2xl">Tampilan Peta MKU</h2>
           {/*  */}
           <EditButton
+            name="editMkuMapButton"
             onClick={() =>
               document.getElementById("edit_mku_map_modal").showModal()
             }

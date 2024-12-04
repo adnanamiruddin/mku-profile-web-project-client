@@ -58,6 +58,7 @@ const SubjectTable = ({
                     </td>
                     <td className="w-[20%] text-start flex items-center gap-2">
                       <EditButton
+                        name={`editSubjectButton${subject.id}`}
                         onClick={() =>
                           router.push(
                             `/dashboard/mata-kuliah/tambah?editSubjectId=${subject.id}&editSubjectSlug=${subject.mkSlug}`
@@ -68,6 +69,7 @@ const SubjectTable = ({
                       </EditButton>
                       {/*  */}
                       <DeleteButton
+                        name={`deleteSubjectButton${subject.id}`}
                         onClick={() => {
                           setSelectedSubjectIdToDelete(subject.id);
                           document
@@ -137,6 +139,7 @@ export default function DashboardSubjectsPage() {
             <h2 className="font-bold text-2xl">Daftar Mata Kuliah</h2>
             {/*  */}
             <AddDataButton
+              name="createSubjectButton"
               onClick={() => router.push("/dashboard/mata-kuliah/tambah")}
             >
               Buat

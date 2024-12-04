@@ -3,11 +3,13 @@ import privateClientFile from "../clients/private.client.file";
 
 const informationEndpoint = {
   blogs: "/blogs",
-  blogsByPage: ({ page }) => `/blogs?page=${page}`,
+  blogsQueryPage: ({ page }) => `/blogs?page=${page}`,
   blogsUploadImage: "/blogs/upload-image",
   blogsWithStatus1: "/blogs?status=1",
   blogsBySlug: ({ slug }) => `/blogs/${slug}`,
   blogsById: ({ blogId }) => `/blogs/${blogId}`,
+  searchBlogQueryTitle: ({ title, page }) =>
+    `/blogs?title=${title}&page=${page}`,
 
   map: "/about/map",
 };
@@ -48,7 +50,7 @@ const informationApi = {
     getAllBlogs: async ({ page }) => {
       try {
         const response = await privateClient.get(
-          informationEndpoint.blogsByPage({ page })
+          informationEndpoint.blogsQueryPage({ page })
         );
         return { response };
       } catch (error) {
@@ -71,6 +73,17 @@ const informationApi = {
       try {
         const response = await privateClient.get(
           informationEndpoint.blogsWithStatus1
+        );
+        return { response };
+      } catch (error) {
+        return { error };
+      }
+    },
+    //
+    searchBlogByTitle: async ({ title, page }) => {
+      try {
+        const response = await privateClient.get(
+          informationEndpoint.searchBlogQueryTitle({ title, page })
         );
         return { response };
       } catch (error) {

@@ -1,5 +1,3 @@
-import { id } from "date-fns/locale";
-
 export const dummySubjectList = [
   {
     type: "Mata Kuliah Wajib Umum",
@@ -136,5 +134,64 @@ export const dummyInformationList = [
     image: "/home-information-1.png",
     slug: "info-sains-skpb-unhas",
     status: "Publish",
+  },
+];
+
+export const dummyLecturerList = [
+  {
+    dsnNip: "196303251989031001",
+    dsnNama: "Dr. Ir. H. M. Nasir, M.Sc.",
+    dsnEmail: "nasir@gmail.com",
+    dsnKontak: "08123456789",
+    dsnFoto: "/profile-lecturer.png",
+  },
+  {
+    dsnNip: "196303251989031001",
+    dsnNama: "Dr. Ir. H. M. Nasir, M.Sc.",
+    dsnEmail: "nasir@gmail.com",
+    dsnKontak: "08123456789",
+    dsnFoto: "/profile-lecturer.png",
+  },
+  {
+    dsnNip: "196303251989031001",
+    dsnNama: "Dr. Ir. H. M. Nasir, M.Sc.",
+    dsnEmail: "nasir@gmail.com",
+    dsnKontak: "08123456789",
+    dsnFoto: "/profile-lecturer.png",
+  },
+  {
+    dsnNip: "196303251989031001",
+    dsnNama: "Dr. Ir. H. M. Nasir, M.Sc.",
+    dsnEmail: "nasir@gmail.com",
+    dsnKontak: "08123456789",
+    dsnFoto: "/profile-lecturer.png",
+  },
+  {
+    dsnNip: "196303251989031001",
+    dsnNama: "Dr. Ir. H. M. Nasir, M.Sc.",
+    dsnEmail: "nasir@gmail.com",
+    dsnKontak: "08123456789",
+    dsnFoto: "/profile-lecturer.png",
+  },
+  {
+    dsnNip: "196303251989031001",
+    dsnNama: "Dr. Ir. H. M. Nasir, M.Sc.",
+    dsnEmail: "nasir@gmail.com",
+    dsnKontak: "08123456789",
+    dsnFoto: "/profile-lecturer.png",
+  },
+  {
+    dsnNip: "196303251989031001",
+    dsnNama: "Dr. Ir. H. M. Nasir, M.Sc.",
+    dsnEmail: "nasir@gmail.com",
+    dsnKontak: "08123456789",
+    dsnFoto: "/profile-lecturer.png",
+  },
+  {
+    dsnNip: "196303251989031001",
+    dsnNama: "Dr. Ir. H. M. Nasir, M.Sc.",
+    dsnEmail: "nasir@gmail.com",
+    dsnKontak: "08123456789",
+    dsnFoto: "/profile-lecturer.png",
   },
 ];

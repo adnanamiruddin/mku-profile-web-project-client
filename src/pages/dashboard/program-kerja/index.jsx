@@ -47,13 +47,21 @@ export default function DashboardWorkProgramPage() {
         <div className="pt-4 flex justify-between items-center border-b border-gray-400 pb-4">
           <h2 className="font-bold text-2xl">Konten Program Kerja</h2>
           {/*  */}
-          <SaveButton onClick={handleSaveWorkProgram} disabled={loading}>
+          <SaveButton
+            name="saveWorkProgramButton"
+            onClick={handleSaveWorkProgram}
+            disabled={loading}
+          >
             Simpan
           </SaveButton>
         </div>
 
         <div className="mt-4 overflow-x-auto">
-          <TextEditor content={content} setContent={setContent} />
+          <TextEditor
+            id="workProgramTextEditor"
+            content={content}
+            setContent={setContent}
+          />
         </div>
       </div>
     </div>

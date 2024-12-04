@@ -122,12 +122,13 @@ const subjectApi = {
     }
   },
 
-  updateSubject: async ({ subjectId, name, category, description }) => {
+  updateSubject: async ({ subjectId, name, slug, category, description }) => {
     try {
       const response = await privateClient.put(
         subjectEndpoint.subjectById({ subjectId }),
         {
           nama: name,
+          slug,
           tipe: category,
           deskripsi: description,
         }
